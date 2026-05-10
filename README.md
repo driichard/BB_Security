@@ -1,4 +1,4 @@
-# 🛡️ SafeRadar
+# 🛡️ BB SECURITY
 
 Aplicativo mobile em desenvolvimento para **detecção de golpes digitais** utilizando inteligência artificial.
 
