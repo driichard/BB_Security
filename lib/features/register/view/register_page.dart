@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../viewmodel/login_viewmodel.dart';
+import '../viewmodel/register_viewmodel.dart';
 import '../../../../core/theme/app_colors.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatelessWidget {
+  const RegisterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => LoginViewModel(),
-      child: const _LoginView(),
+      create: (_) => RegisterViewModel(),
+      child: const _RegisterView(),
     );
   }
 }
 
-class _LoginView extends StatelessWidget {
-  const _LoginView();
+class _RegisterView extends StatelessWidget {
+  const _RegisterView();
 
   @override
   Widget build(BuildContext context) {
-    final vm = context.watch<LoginViewModel>();
+    final vm = context.watch<RegisterViewModel>();
 
     return Scaffold(
       backgroundColor: AppColors.primaryBlue,
@@ -29,21 +29,12 @@ class _LoginView extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             children: [
-              const SizedBox(height: 48),
-
-              // Logo e título
-              _buildHeader(),
-
-              const SizedBox(height: 48),
-
-              // Card de formulário
+              const SizedBox(height: 32),
+              _buildHeader(context),
+              const SizedBox(height: 32),
               _buildFormCard(context, vm),
-
               const SizedBox(height: 24),
-
-              // Link de cadastro
-              _buildSignupLink(context),
-
+              _buildLoginLink(context),
               const SizedBox(height: 32),
             ],
           ),
@@ -52,47 +43,41 @@ class _LoginView extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
-    return Column(
+  Widget _buildHeader(BuildContext context) {
+    return Row(
       children: [
-        Container(
-          width: 88,
-          height: 88,
-          decoration: const BoxDecoration(
-            color: AppColors.primaryYellow,
-            shape: BoxShape.circle,
-          ),
-          child: const Icon(
-            Icons.shield_outlined,
-            size: 48,
-            color: AppColors.primaryBlue,
-          ),
+        IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.arrow_back_ios, color: AppColors.white, size: 20),
         ),
-        const SizedBox(height: 16),
-        const Text(
-          'BB Security',
-          style: TextStyle(
-            color: AppColors.white,
-            fontSize: 26,
-            fontWeight: FontWeight.w600,
-            letterSpacing: 0.5,
-          ),
-        ),
-        const SizedBox(height: 4),
-        const Text(
-          'Banco do Brasil',
-          style: TextStyle(
-            color: AppColors.primaryYellow,
-            fontSize: 13,
-            fontWeight: FontWeight.w500,
-            letterSpacing: 1.5,
-          ),
+        const SizedBox(width: 8),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
+            Text(
+              'Criar conta',
+              style: TextStyle(
+                color: AppColors.white,
+                fontSize: 22,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            Text(
+              'BB Security',
+              style: TextStyle(
+                color: AppColors.primaryYellow,
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                letterSpacing: 1.5,
+              ),
+            ),
+          ],
         ),
       ],
     );
   }
 
-  Widget _buildFormCard(BuildContext context, LoginViewModel vm) {
+  Widget _buildFormCard(BuildContext context, RegisterViewModel vm) {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.white,
@@ -102,39 +87,40 @@ class _LoginView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Bem-vindo ',
-            style: TextStyle(
-              color: AppColors.primaryBlue,
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          const SizedBox(height: 4),
-          const Text(
-            'Faça login para continuar',
-            style: TextStyle(
-              color: AppColors.textSecondary,
-              fontSize: 14,
-            ),
-          ),
-          const SizedBox(height: 24),
 
-          // Campo e-mail
+          // Nome
+          _buildLabel('Nome completo'),
+          const SizedBox(height: 6),
+          TextField(
+            controller: vm.nameController,
+            onChanged: (_) => vm.clearError(),
+            decoration: _inputDecoration(hint: 'Seu nome', icon: Icons.person_outline),
+          ),
+          const SizedBox(height: 16),
+
+          // Email
           _buildLabel('E-mail'),
           const SizedBox(height: 6),
           TextField(
             controller: vm.emailController,
             keyboardType: TextInputType.emailAddress,
             onChanged: (_) => vm.clearError(),
-            decoration: _inputDecoration(
-              hint: 'seu@email.com',
-              icon: Icons.email_outlined,
-            ),
+            decoration: _inputDecoration(hint: 'seu@email.com', icon: Icons.email_outlined),
           ),
           const SizedBox(height: 16),
 
-          // Campo senha
+          // CPF
+          _buildLabel('CPF'),
+          const SizedBox(height: 6),
+          TextField(
+            controller: vm.cpfController,
+            keyboardType: TextInputType.number,
+            onChanged: (_) => vm.clearError(),
+            decoration: _inputDecoration(hint: '000.000.000-00', icon: Icons.badge_outlined),
+          ),
+          const SizedBox(height: 16),
+
+          // Senha
           _buildLabel('Senha'),
           const SizedBox(height: 6),
           TextField(
@@ -146,9 +132,7 @@ class _LoginView extends StatelessWidget {
               icon: Icons.lock_outline,
               suffixIcon: IconButton(
                 icon: Icon(
-                  vm.obscurePassword
-                      ? Icons.visibility_outlined
-                      : Icons.visibility_off_outlined,
+                  vm.obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
                   color: AppColors.textSecondary,
                   size: 20,
                 ),
@@ -156,8 +140,30 @@ class _LoginView extends StatelessWidget {
               ),
             ),
           ),
+          const SizedBox(height: 16),
 
-          // Mensagem de erro
+          // Confirmar senha
+          _buildLabel('Confirmar senha'),
+          const SizedBox(height: 6),
+          TextField(
+            controller: vm.confirmPasswordController,
+            obscureText: vm.obscureConfirmPassword,
+            onChanged: (_) => vm.clearError(),
+            decoration: _inputDecoration(
+              hint: '••••••••',
+              icon: Icons.lock_outline,
+              suffixIcon: IconButton(
+                icon: Icon(
+                  vm.obscureConfirmPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                  color: AppColors.textSecondary,
+                  size: 20,
+                ),
+                onPressed: vm.toggleConfirmPasswordVisibility,
+              ),
+            ),
+          ),
+
+          // Erro
           if (vm.errorMessage != null) ...[
             const SizedBox(height: 12),
             Container(
@@ -168,14 +174,12 @@ class _LoginView extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.error_outline,
-                      color: AppColors.highRisk, size: 16),
+                  const Icon(Icons.error_outline, color: AppColors.highRisk, size: 16),
                   const SizedBox(width: 8),
-                  Text(
-                    vm.errorMessage!,
-                    style: const TextStyle(
-                      color: AppColors.highRisk,
-                      fontSize: 13,
+                  Expanded(
+                    child: Text(
+                      vm.errorMessage!,
+                      style: const TextStyle(color: AppColors.highRisk, fontSize: 13),
                     ),
                   ),
                 ],
@@ -183,39 +187,33 @@ class _LoginView extends StatelessWidget {
             ),
           ],
 
-          const SizedBox(height: 8),
+          const SizedBox(height: 16),
 
-          // Esqueci a senha
-          Align(
-            alignment: Alignment.centerRight,
-            child: TextButton(
-              onPressed: () =>
-                  Navigator.pushNamed(context, '/forgot-password'),
-              style: TextButton.styleFrom(
-                padding: EdgeInsets.zero,
-                minimumSize: Size.zero,
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          // Termos
+          Row(
+            children: [
+              Checkbox(
+                value: vm.acceptedTerms,
+                onChanged: (_) => vm.toggleTerms(),
+                activeColor: AppColors.primaryBlue,
               ),
-              child: const Text(
-                'Esqueci minha senha',
-                style: TextStyle(
-                  color: AppColors.primaryBlue,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
+              const Expanded(
+                child: Text(
+                  'Aceito os termos de uso e política de privacidade (LGPD)',
+                  style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
                 ),
               ),
-            ),
+            ],
           ),
 
           const SizedBox(height: 24),
 
-          // Botão entrar
+          // Botão cadastrar
           SizedBox(
             width: double.infinity,
             height: 52,
             child: ElevatedButton(
-              onPressed:
-                  vm.isLoading ? null : () => vm.login(context),
+              onPressed: vm.isLoading ? null : () => vm.register(context),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryYellow,
                 foregroundColor: AppColors.primaryBlue,
@@ -234,11 +232,8 @@ class _LoginView extends StatelessWidget {
                       ),
                     )
                   : const Text(
-                      'Entrar',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      'Criar conta',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                     ),
             ),
           ),
@@ -280,26 +275,24 @@ class _LoginView extends StatelessWidget {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide:
-            const BorderSide(color: AppColors.primaryBlue, width: 1.5),
+        borderSide: const BorderSide(color: AppColors.primaryBlue, width: 1.5),
       ),
-      contentPadding:
-          const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
     );
   }
 
-  Widget _buildSignupLink(BuildContext context) {
+  Widget _buildLoginLink(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Text(
-          'Não tem conta? ',
+          'Já tem conta? ',
           style: TextStyle(color: Colors.white60, fontSize: 14),
         ),
         GestureDetector(
-          onTap: () => Navigator.pushNamed(context, '/register'),
+          onTap: () => Navigator.pushReplacementNamed(context, '/login'),
           child: const Text(
-            'Criar conta',
+            'Fazer login',
             style: TextStyle(
               color: AppColors.primaryYellow,
               fontSize: 14,

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'features/register/view/register_page.dart';
+import 'features/onboarding/view/splash_page.dart';
 import 'features/auth/view/login_page.dart';
-import 'features/auth/viewmodel/login_viewmodel.dart';
-import 'features/analyze/viewmodel/analyze_viewmodel.dart';
+import 'features/forgot_password/view/forgot_password_page.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -12,15 +13,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => LoginViewModel()),
-        ChangeNotifierProvider(create: (_) => AnalyzeViewModel()),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: const LoginPage(),
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      initialRoute: '/splash',
+      routes: {
+        '/splash': (_) => const SplashPage(),
+        '/login':  (_) => const LoginPage(),
+        '/register': (_) => const RegisterPage(),
+        '/forgot-password': (_) => const ForgotPasswordPage(),
+        // adiciona as rotas aqui conforme for criando as telas
+      },
     );
   }
 }
