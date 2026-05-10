@@ -106,20 +106,9 @@ lib/
 
 ---
 
-## ▶️ Como rodar o projeto
-
-```bash
-git clone https://github.com/seu-usuario/safe-radar.git
-cd safe-radar
-flutter pub get
-flutter run
-```
-
----
-
 
 ## 📌 Observação
 
-Projeto acadêmico em evolução, desenvolvido em parceria com residência tecnológica.
+Projeto acadêmico em evolução, sendo desenvolvido em parceria com Banco do brasil.
 
 ---
