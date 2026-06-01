@@ -8,6 +8,7 @@ import 'features/analyze_text/view/analyze_text_page.dart';
 import 'features/result/view/result_page.dart';
 import 'features/upload_print/view/upload_print_page.dart';
 import 'features/history/view/history_page.dart';
+import 'features/settings/view/settings_page.dart';
 
 
 void main() {
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
         '/result': (_) => const ResultPage(),
         '/upload-print': (_) => const UploadPrintPage(),
         '/history': (_) => const HistoryPage(),
+        '/settings': (_) => const SettingsPage(),
         
       },
     );
