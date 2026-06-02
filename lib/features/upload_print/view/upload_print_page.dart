@@ -47,7 +47,6 @@ class _UploadPrintView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
-              // Instrução
               Container(
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
@@ -73,12 +72,10 @@ class _UploadPrintView extends StatelessWidget {
               ),
               const SizedBox(height: 24),
 
-              // Área de upload ou preview
               vm.imagePath == null
                   ? _buildUploadArea(context, vm)
                   : _buildImagePreview(context, vm),
 
-              // Mensagem de erro
               if (vm.errorMessage != null) ...[
                 const SizedBox(height: 12),
                 Container(
@@ -104,7 +101,6 @@ class _UploadPrintView extends StatelessWidget {
 
               const Spacer(),
 
-              // Botão analisar
               SizedBox(
                 width: double.infinity,
                 height: 52,
@@ -140,11 +136,9 @@ class _UploadPrintView extends StatelessWidget {
     );
   }
 
-  // Área para escolher imagem (quando nenhuma foi selecionada)
   Widget _buildUploadArea(BuildContext context, UploadPrintViewModel vm) {
     return Column(
       children: [
-        // Área tracejada de upload
         GestureDetector(
           onTap: () => _showImageSourceDialog(context, vm),
           child: Container(
@@ -156,7 +150,6 @@ class _UploadPrintView extends StatelessWidget {
               border: Border.all(
                 color: AppColors.primaryBlue.withOpacity(0.3),
                 width: 1.5,
-                // ignore: deprecated_member_use
                 strokeAlign: BorderSide.strokeAlignInside,
               ),
             ),
@@ -191,7 +184,6 @@ class _UploadPrintView extends StatelessWidget {
         ),
         const SizedBox(height: 16),
 
-        // Botões câmera e galeria
         Row(
           children: [
             Expanded(
@@ -231,7 +223,6 @@ class _UploadPrintView extends StatelessWidget {
     );
   }
 
-  // Preview depois que a imagem foi selecionada
   Widget _buildImagePreview(BuildContext context, UploadPrintViewModel vm) {
     return Container(
       width: double.infinity,
@@ -243,7 +234,6 @@ class _UploadPrintView extends StatelessWidget {
       ),
       child: Stack(
         children: [
-          // Placeholder da imagem (trocar por Image.file depois)
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -258,7 +248,6 @@ class _UploadPrintView extends StatelessWidget {
             ),
           ),
 
-          // Botão de remover imagem
           Positioned(
             top: 8,
             right: 8,
@@ -279,7 +268,6 @@ class _UploadPrintView extends StatelessWidget {
     );
   }
 
-  // Dialog para escolher câmera ou galeria
   void _showImageSourceDialog(BuildContext context, UploadPrintViewModel vm) {
     showModalBottomSheet(
       context: context,

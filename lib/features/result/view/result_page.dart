@@ -6,7 +6,6 @@ class ResultPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Recebe os dados da análise
     final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     final String risk = args['risk'];
     final String message = args['message'];
@@ -32,11 +31,9 @@ class ResultPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Card de risco
               _buildRiskCard(risk),
               const SizedBox(height: 20),
 
-              // Mensagem analisada
               _buildSection(
                 title: 'Mensagem analisada',
                 child: Container(
@@ -59,8 +56,7 @@ class ResultPage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
 
-              // Motivos
-              if (risk != 'baixo') ...[
+               if (risk != 'baixo') ...[
                 _buildSection(
                   title: 'Motivos identificados',
                   child: Column(
@@ -70,11 +66,9 @@ class ResultPage extends StatelessWidget {
                 const SizedBox(height: 20),
               ],
 
-              // Dica de segurança
               _buildTip(risk),
               const SizedBox(height: 24),
 
-              // Botões
               SizedBox(
                 width: double.infinity,
                 height: 52,

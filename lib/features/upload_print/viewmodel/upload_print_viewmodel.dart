@@ -1,28 +1,22 @@
 import 'package:flutter/material.dart';
 
 class UploadPrintViewModel extends ChangeNotifier {
-  // Guarda o caminho da imagem escolhida
   String? imagePath;
   bool isLoading = false;
   String? errorMessage;
 
-  // Simula a escolha de imagem — trocar pelo image_picker depois
   void pickImage(String source) {
-    // Por enquanto só simula que uma imagem foi selecionada
-    // Quando integrar: usar image_picker para abrir câmera ou galeria
     imagePath = 'imagem_selecionada';
     errorMessage = null;
     notifyListeners();
   }
 
-  // Remove a imagem selecionada
   void removeImage() {
     imagePath = null;
     notifyListeners();
   }
 
   Future<void> analyze(BuildContext context) async {
-    // Verifica se tem imagem selecionada
     if (imagePath == null) {
       errorMessage = 'Selecione uma imagem para analisar.';
       notifyListeners();
